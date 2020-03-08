@@ -27,7 +27,7 @@
       template: src=hello.py dest=/tmp/myapp/hello.py
               
     - name: configure supervisor
-      template: src=myapp.conf dest=/etc//etc/supervisord.d/myapp.conf
+      template: src=myapp.conf dest=/etc/supervisord.d/myapp.conf
       notify:
         - restart supervisor
   
