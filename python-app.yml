@@ -4,15 +4,16 @@
 
     - name: install packages
       yum: name={{ item }} update_cache=yes state=latest
-      with_items:
+      loop:
         - python
         - git
         - python-pip
         - supervisor
 
     - name: install pip packages
-      pip: name={{ item }}
-      with_items:
+      pip: 
+        name: "{{ item }}"
+      loop:
         - flask
         - supervisor
 
@@ -26,7 +27,7 @@
       template: src=hello.py dest=/tmp/myapp/hello.py
               
     - name: configure supervisor
-      template: src=myapp.conf dest=/etc/supervisor/conf.d/myapp.conf
+      template: src=myapp.conf dest=/etc//etc/supervisord.d/myapp.conf
       notify:
         - restart supervisor
   
