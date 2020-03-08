@@ -1,0 +1,35 @@
+---
+- hosts: all
+  tasks:
+
+    - name: install packages
+      apt: name={{ item }} update_cache=yes state=latest
+      with_items:
+        - python
+        - git
+        - python-pip
+        - supervisor
+
+    - name: install pip packages
+      pip: name={{ item }}
+      with_items:
+        - flask
+        - supervisor
+
+    - name: Create app directory
+      file:
+        name: /tmp/myapp
+        state: directory
+        mode: 0755 
+
+    - name: Copy flask app
+      template: src=hello.py dest=/tmp/myapp/hello.py
+              
+    - name: configure supervisor
+      template: src=myapp.conf dest=/etc/supervisor/conf.d/myapp.conf
+      notify:
+        - restart supervisor
+  
+  handlers:
+    - name: restart supervisor
+      service: name=supervisor state=restarted
