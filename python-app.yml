@@ -32,7 +32,7 @@
       template: src=hello.py dest=/tmp/myapp/hello.py
               
     - name: configure supervisor
-      template: src=myapp.ini dest=/etc/supervisord.d/myapp.ini
+      template: src=myapp.ini.j2 dest=/etc/supervisord.d/myapp.ini
       notify:
         - restart supervisor
 
