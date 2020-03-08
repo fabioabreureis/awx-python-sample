@@ -23,14 +23,19 @@
         state: directory
         mode: 0755 
 
+    - name: start supervisord
+      service:
+        name: supervisord 
+        state: restarted
+
     - name: Copy flask app
       template: src=hello.py dest=/tmp/myapp/hello.py
               
     - name: configure supervisor
-      template: src=myapp.conf dest=/etc/supervisord.d/myapp.conf
+      template: src=myapp.ini dest=/etc/supervisord.d/myapp.ini
       notify:
         - restart supervisor
-  
+
   handlers:
     - name: restart supervisor
       supervisorctl: name=myapp state=started
